@@ -8,33 +8,60 @@ const connection = mysql.createConnection(conf);
 
 const executeQuery = (sql) => {
     return new Promise((resolve, reject) => {
-        connection.query(sql, function (err, result){
-            if (err) {
-                console.error(err);
-                reject();     
-             }   
-             console.log('done');
-             resolve(result);
+        connection.query(sql, function (err, result) {
+           if (err) {
+              console.error(err);
+              reject();
+           }
+           console.log('done');
+           resolve(result);
         });
-    });
-};
+    })
+}
 
 const database = {
-    createTable: () =>{
-        return executeQuery(`
-        CREATE TABLE IF NOT EXISTS images
-        ( id INT PRIMARY KEY AUTO_INCREMENT,
-        name VARCHAR(255) NOT NULL)`);
+    createTable: async() => {
+        await executeQuery(`
+        CREATE TABLE IF NOT EXISTS visit (
+        id int PRIMARY KEY AUTO_INCREMENT,
+        idType int NOT NULL,
+        date DATE NOT NULL,
+        hour INT NOT NULL,
+        name VARCHAR(50),
+        FOREIGN KEY (idType) REFERENCES type(id) 
+        `);
+        return await executeQuery(`
+            CREATE TABLE IF NOT EXISTS type (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            name varchar(20)
+        )`);      
     },
-    insert: (name) =>{
+    insert: async (visit) =>{
         let sql = `
-        INSERT INTO images (name) VALUES ('$NAME')`;
-        sql = sql.replace("$NAME",name);
-        return executeQuery(sql);
-    },
+         INSERT INTO visit(idType, date, hour, name)
+         VALUES (
+            '${visit.idType}', 
+            '${visit.date}', 
+            '${visit.hour}', 
+            ${visit.name},)
+            `;
+      const result = await executeQuery(sql);
+      visit.plates.forEach(async (element) => {
+         sql = `
+            INSERT INTO plates(idType
+            VALUES (
+               '${element}', 
+               ${result.insertId})
+         `;
+         await executeQuery(sql);
+      });
+   },
     select: () =>{
         const sql = `
-        SELECT id, name FROM images`;
+        SELECT b.id, t.name type, b.date, b.hour, b.name
+        FROM booking AS b
+        JOIN type as t ON b.idType = t.id
+        WHERE date='aaaa-mm-gg'`;
         return executeQuery(sql);
     },
     delete: (id) =>{
