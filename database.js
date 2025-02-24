@@ -22,19 +22,19 @@ const executeQuery = (sql) => {
 const database = {
     createTable: async() => {
         await executeQuery(`
+       CREATE TABLE IF NOT EXISTS type (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            name varchar(20)
+        )`);
+        
+        return await executeQuery(`
         CREATE TABLE IF NOT EXISTS visit (
         id int PRIMARY KEY AUTO_INCREMENT,
         idType int NOT NULL,
         date DATE NOT NULL,
         hour INT NOT NULL,
         name VARCHAR(50),
-        FOREIGN KEY (idType) REFERENCES type(id) 
-        `);
-        return await executeQuery(`
-            CREATE TABLE IF NOT EXISTS type (
-            id INT PRIMARY KEY AUTO_INCREMENT,
-            name varchar(20)
-        )`);      
+        FOREIGN KEY (idType) REFERENCES type(id) `);      
     },
     insert: async (visit) =>{
         let sql = `
