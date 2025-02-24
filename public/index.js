@@ -1,3 +1,9 @@
+import { createLogin } from "../login";
+import { createNavigator } from "../navigator";
+
+createLogin();
+const navigator = createNavigator(document.querySelector('#container'));
+
 const createMiddleware = () => {
     return {
       load: async () => {
