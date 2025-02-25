@@ -1,3 +1,5 @@
+conf.json
+ca.pem
 # Logs
 logs
 *.log
