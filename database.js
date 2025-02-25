@@ -59,14 +59,14 @@ const database = {
     select: () =>{
         const sql = `
         SELECT b.id, t.name type, b.date, b.hour, b.name
-        FROM visit AS b
+        FROM booking AS b
         JOIN type as t ON b.idType = t.id
         WHERE date='aaaa-mm-gg'`;
         return executeQuery(sql);
     },
     delete: (id) =>{
         let sql = `
-        DELETE FROM visit WHERE id=$ID`;
+        DELETE FROM images WHERE id=$ID`;
         sql = sql.replace("$ID",id);
         return executeQuery(sql);
     },
