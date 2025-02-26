@@ -9,7 +9,7 @@ const navigator = createNavigator(document.querySelector('#container'));
 
 const createMiddleware = () => {
   return {
-    load: async () => {
+    load: () => {
       return new Promise((resolve, reject) => {
         fetch("http://localhost:80/visits")
           .then((response) => response.json())
@@ -19,14 +19,18 @@ const createMiddleware = () => {
           .catch(reject);
       });
     },
-    delete: async (id) => {
-      const response = await fetch("/delete/" + id, {
-        method: 'DELETE',
-      });
-      const json = await response.json();
-      return json;
+    delete: (id) => {
+      return new Promise((resolve, reject) => {
+        fetch(`http://localhost:80/delete/${id}`, {
+          method: "DELETE"
+        })
+          .then((response)=> response.json())
+          .then((json)=> {
+            resolve.json;
+          })
+      })
     },
-    add: async (visit) => {
+    add: (visit) => {
       return new Promise((resolve, reject) => {
         fetch("http://localhost:80/visits/add", {
           method: 'POST',
