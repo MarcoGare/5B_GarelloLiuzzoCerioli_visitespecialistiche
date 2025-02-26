@@ -43,7 +43,7 @@ const database = {
             '${visit.idType}', 
             '${visit.date}', 
             '${visit.hour}', 
-            ${visit.name},)
+            ${visit.name})
             `;
       const result = await executeQuery(sql);
       visit.plates.forEach(async (element) => {

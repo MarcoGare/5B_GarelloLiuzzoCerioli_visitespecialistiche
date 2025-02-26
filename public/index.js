@@ -1,11 +1,5 @@
-import { json, response } from "express";
-import { createLogin } from "../login";
-import { createNavigator } from "../navigator";
-
-createLogin();
 const formContainer = document.getElementById('form-container');
 const tableContainer = document.getElementById('table-container');
-const navigator = createNavigator(document.querySelector('#container'));
 
 const createMiddleware = () => {
   return {
@@ -26,7 +20,7 @@ const createMiddleware = () => {
         })
           .then((response)=> response.json())
           .then((json)=> {
-            resolve.json;
+            resolve(json);
           })
       })
     },
