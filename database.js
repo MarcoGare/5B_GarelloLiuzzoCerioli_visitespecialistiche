@@ -34,7 +34,7 @@ const database = {
         date DATE NOT NULL,
         hour INT NOT NULL,
         name VARCHAR(50),
-        FOREIGN KEY (idType) REFERENCES type(id) `);      
+        FOREIGN KEY (idType) REFERENCES type(id) )`);      
     },
     insert: async (visit) =>{
         let sql = `
