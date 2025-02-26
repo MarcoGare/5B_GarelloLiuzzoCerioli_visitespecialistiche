@@ -2,6 +2,8 @@ import { createLogin } from "../login";
 import { createNavigator } from "../navigator";
 
 createLogin();
+const formContainer = document.getElementById('form-container');
+const tableContainer = document.getElementById('table-container');
 const navigator = createNavigator(document.querySelector('#container'));
 
 const createMiddleware = () => {
