@@ -4,10 +4,6 @@ const path = require('path');
 const app = express();
 const database = require("./database");
 database.createTable();
-const tipologie = ["Cardiologia", "Psicologia", "Oncologia", "Ortopedia", "Neurologia"];
-tipologie.forEach((tipologia)=>{
-    database.init(tipologia)
-});
 app.use("/", express.static(path.join(__dirname, "public")));
 app.post("/insert", async (req, res) => {
   const visit = req.body.visit;
