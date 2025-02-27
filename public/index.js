@@ -1,8 +1,6 @@
-import { carica } from "../../5B_LiuzzoDiCugnoMendoza_VisiteSpecialistiche/carica_salva.js";
 import { createMiddleware } from "../middleware.js";
 import { cTable } from "../tables.js";
 
-const formContainer = document.getElementById('form-container');
 const tableContainer = document.getElementById('table-container');
 let currentWeekOffset = 0;
 let tipologiaSelez = 0;
@@ -148,9 +146,3 @@ function succSett() {
   currentWeekOffset++;
   render();
 }
-
-setInterval(()=>{
-  carica().then(()=>{
-    render();
-  })
-},300000);
