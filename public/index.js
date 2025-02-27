@@ -79,12 +79,17 @@ function render() {
 }
 
 function renderTipologie() {
-  return `<div class="tipologie-container mb-4">` +
-    tipologieVisita.map((tipologia, index) => `
-      <button class="btn ${index === tipologiaSelez ? 'btn-primary' : 'btn-secondary'} mx-1" onclick="selectTipologia(${index})">
-        ${tipologia}
-      </button>`).join('') +
-    '</div>';
+  let html = '<div class="tipologie-container mb-4">';
+  tipologieVisita.forEach((tipologia, index) => {
+    let buttonClass = index === tipologiaSelez ? 'btn-primary' : 'btn-secondary';
+    html += `<button 
+              class="btn ${buttonClass} mx-1" 
+              onclick="selectTipologia(${index})">
+              ${tipologia}
+             </button>`;
+  });
+  html += '</div>';
+  return html;
 }
 
 function precSett() {
@@ -129,7 +134,7 @@ function SubmForm() { //componente form
         '<div class="alert alert-warning">La clinica è chiusa durante il weekend. Seleziona un giorno della settimana.</div>';
       return; 
     }
-    const key = `${tipologieVisita[tipologiaSelez]}-${data}-${ora}`;
+    const key = `${tipologieVisita[tipologiaSelez]}/${data}/${ora}`;
     const disponibilita = diz[key];
 
     if (!disponibilita) {
