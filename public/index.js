@@ -62,7 +62,11 @@ function render() {
       formattedDate.forEach(({ date }) => {
           const key = `${tipologieVisita[tipologiaSelez]}-${date}-${ora}`;
           const disponibilita = diz[key] || 'Disponibile';
-          html += `<td class="${disponibilita !== "Disponibile" ? "table-info" : ""}">${disponibilita}</td>`;
+          if (disponibilita !== "Disponibile") {
+            html += `<td class="table-info">${disponibilita}</td>`;
+          } else {
+            html += `<td>${disponibilita}</td>`;
+          }
       });
       html += '</tr>';
   });
@@ -91,4 +95,53 @@ function precSett() {
 function succSett() {
   currentWeekOffset++;
   render();
+}
+
+document.getElementById('apriBtn').onclick = () => {
+  document.getElementById('modal').style.display = 'block';
+};
+
+document.getElementById('chiudiBtn').onclick = () => {
+  document.getElementById('modal').style.display = 'none';
+};
+
+document.getElementById('cancelButton').onclick = () => {
+  document.getElementById('modal').style.display = 'none';
+};
+
+document.getElementById("submit").onclick = () => {
+  SubmForm();
+}
+
+
+function SubmForm() { //componente form 
+    const data = document.getElementById('data').value;
+    const ora = document.getElementById('ora').value;
+    const nominativo = document.getElementById('nominativo').value;
+    const esitoDiv = document.getElementById('esito');
+
+    const data2 = moment(data)
+    const dayOfWeek = data2.day();
+    //console.log(data2)
+
+    if (dayOfWeek === 0 || dayOfWeek === 6) { // 0 = Domenica, 6 = Sabato
+      esitoDiv.innerHTML =
+        '<div class="alert alert-warning">La clinica è chiusa durante il weekend. Seleziona un giorno della settimana.</div>';
+      return; 
+    }
+    const key = `${tipologieVisita[tipologiaSelez]}-${data}-${ora}`;
+    const disponibilita = diz[key];
+
+    if (!disponibilita) {
+        diz[key] = nominativo;
+        console.log(diz);
+        //IMPLEMENTARE SALVATAGGIO SU DB
+        esitoDiv.innerHTML = '<div class="alert alert-success">Prenotazione aggiunta con successo!</div>';
+        document.getElementById('data').value = "";
+        document.getElementById('ora').value = "";
+        document.getElementById('nominativo').value = "";
+        render();
+    } else {
+        esitoDiv.innerHTML ='<div class="alert alert-danger">Slot non disponibile. Riprova.</div>';
+    }
 }
