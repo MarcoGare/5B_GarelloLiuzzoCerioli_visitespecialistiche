@@ -1,6 +1,6 @@
 let myToken, myKey;
 
-fetch('../json/conf.json') // carica le variabili da conf.json
+fetch('../conf.json') // carica le variabili da conf.json
     .then(response => {
         if (!response.ok) {
             console.log('Errore nel caricamento del file JSON');
@@ -54,10 +54,8 @@ export const createLogin = () => {
             if (backdrop) {
                 backdrop.remove();
             }
-            window.location.hash = 'admin';
-            document.getElementById("admin").style.display = 'block';
-            document.getElementById("home").style.display = 'none';
-            document.getElementById("user-ad").innerHTML = inputName.value
+            document.getElementById("apriBtn").style.display = 'block';
+            document.getElementById("adminBtn").style.display = 'none';
         }
         login(inputName.value, inputPassword.value).then(result => {
             if (result) {
@@ -66,14 +64,12 @@ export const createLogin = () => {
                 loginModal.style.display = "none";
                 document.body.classList.remove('modal-open');
                 const backdrop = document.querySelector('.modal-backdrop');
+
                 if (backdrop) {
                     backdrop.remove();
                 }
-                window.location.hash = 'admin';
-                document.getElementById("admin").style.display = 'block';
-                document.getElementById("home").style.display = 'none';
-                document.getElementById("user-ad").innerHTML = inputName.value
-                //cTableAdmin(tableContAd,list)
+                document.getElementById("apriBtn").style.display = 'block';
+                document.getElementById("adminBtn").style.display = 'none';
             } else {
                 esitoLog.innerHTML =
                     '<div class="alert alert-danger">Credenziali Errate!</div>';

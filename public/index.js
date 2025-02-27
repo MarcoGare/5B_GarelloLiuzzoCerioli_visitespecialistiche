@@ -1,10 +1,11 @@
 //import { createMiddleware } from "../middleware.js";
-
+import { createLogin } from "../login.js";
 const tableContainer = document.getElementById('table-container');
 let currentWeekOffset = 0;
 let tipologiaSelez = 0;
 let myToken, myKey, tipologieVisita, giorniSettimana;
 let diz = {}; 
+createLogin();
 
 fetch('../conf.json') // carica le variabili da conf.json
   .then(response => {
@@ -60,7 +61,7 @@ function render() {
   [8, 9, 10, 11, 12].forEach((ora) => {
       html += `<tr><td>${ora}</td>`;
       formattedDate.forEach(({ date }) => {
-          const key = `${tipologieVisita[tipologiaSelez]}-${date}-${ora}`;
+          const key = `${tipologieVisita[tipologiaSelez]}/${date}/${ora}`;
           const disponibilita = diz[key] || 'Disponibile';
           if (disponibilita !== "Disponibile") {
             html += `<td class="table-info">${disponibilita}</td>`;
@@ -79,17 +80,12 @@ function render() {
 }
 
 function renderTipologie() {
-  let html = '<div class="tipologie-container mb-4">';
-  tipologieVisita.forEach((tipologia, index) => {
-    let buttonClass = index === tipologiaSelez ? 'btn-primary' : 'btn-secondary';
-    html += `<button 
-              class="btn ${buttonClass} mx-1" 
-              onclick="selectTipologia(${index})">
-              ${tipologia}
-             </button>`;
-  });
-  html += '</div>';
-  return html;
+  return `<div class="tipologie-container mb-4">` +
+    tipologieVisita.map((tipologia, index) => `
+      <button class="btn ${index === tipologiaSelez ? 'btn-primary' : 'btn-secondary'} mx-1" onclick="selectTipologia(${index})">
+        ${tipologia}
+      </button>`).join('') +
+    '</div>';
 }
 
 function precSett() {
@@ -102,6 +98,8 @@ function succSett() {
   render();
 }
 
+
+//GESTIONE MODALI
 document.getElementById('apriBtn').onclick = () => {
   document.getElementById('modal').style.display = 'block';
 };
@@ -117,6 +115,20 @@ document.getElementById('cancelButton').onclick = () => {
 document.getElementById("submit").onclick = () => {
   SubmForm();
 }
+
+//GESTIONE BOTTONI LOGIN
+document.getElementById('adminBtn').onclick = () => {
+  document.getElementById('loginModal').style.display = 'block';
+};
+
+document.getElementById('btn-close').onclick = () => {
+  document.getElementById('loginModal').style.display = 'none';
+};
+
+document.getElementById('btn-close').onclick = () => {
+  document.getElementById('loginModal').style.display = 'none';
+};
+
 
 
 function SubmForm() { //componente form 

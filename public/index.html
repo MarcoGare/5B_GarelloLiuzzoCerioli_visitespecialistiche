@@ -11,45 +11,75 @@
     <div class="container mt-5">
         <div id="form-container" class="mb-4"></div>
         <div id="table-container" class="mt-4"></div>
-        <button id="apriBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">
+        <button id="apriBtn" class="loginBtn hidden" data-bs-toggle="modal" data-bs-target="#modal">
             Aggiungi Prenotazione
-          </button>
-        
-          <div id="modal" class="modal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5">Aggiungi Prenotazione</h1>
-                  <button id="chiudiBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form id="prenotazioneForm">
-                    <div class="form-group">
-                      <label for="data">Data</label>
-                      <input type="date" class="form-control" id="data" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="ora">Ora</label>
-                      <select class="form-control" id="ora" required>
-                        <option value="">Seleziona un'ora</option>
-                        <option value="8">8:00</option>
-                        <option value="9">9:00</option>
-                        <option value="10">10:00</option>
-                        <option value="11">11:00</option>
-                        <option value="12">12:00</option>
-                      </select> 
-                    </div>
-                    <div class="form-group">
-                      <label for="nominativo">Nominativo</label>
-                      <input type="text" class="form-control" id="nominativo" required>
-                    </div>
-                    <div id="esito" class="mt-2"></div>
-                    <button type="button" id="submit" class="btn btn-primary">Invia</button>
-                    <button type="button" id="cancelButton" class="btn btn-secondary">Annulla</button>
-                  </form>
-                </div>
+        </button>
+        <button id="adminBtn" class="loginBtn" data-bs-toggle="modal" data-bs-target="#loginModal">
+          Login
+        </button>
+
+        <!-- Modale Login -->
+        <div class="modal" id="loginModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">LOGIN UTENTE</h5>
+                <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="loginForm">
+                  <div class="mb-3">
+                    <label for="user" class="form-label">Username</label>
+                    <input id="user" type="text" class="form-control" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="psw" class="form-label">Password</label>
+                    <input id="psw" type="password" class="form-control" />
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button id="loginBtn" class="btn btn-primary" type="button">Accedi</button>
               </div>
             </div>
+          </div>
+        </div>
+        <!--MODALE PRENOTAZIONI-->
+        <div id="modal" class="modal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Aggiungi Prenotazione</h1>
+                <button id="chiudiBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="prenotazioneForm">
+                  <div class="form-group">
+                    <label for="data">Data</label>
+                    <input type="date" class="form-control" id="data" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="ora">Ora</label>
+                    <select class="form-control" id="ora" required>
+                      <option value="">Seleziona un'ora</option>
+                      <option value="8">8:00</option>
+                      <option value="9">9:00</option>
+                      <option value="10">10:00</option>
+                      <option value="11">11:00</option>
+                      <option value="12">12:00</option>
+                    </select> 
+                  </div>
+                  <div class="form-group">
+                    <label for="nominativo">Nominativo</label>
+                    <input type="text" class="form-control" id="nominativo" required>
+                  </div>
+                  <div id="esito" class="mt-2"></div>
+                  <button type="button" id="submit" class="btn btn-primary">Invia</button>
+                  <button type="button" id="cancelButton" class="btn btn-secondary">Annulla</button>
+                </form>
+              </div>
+            </div>
+          </div>
           </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
