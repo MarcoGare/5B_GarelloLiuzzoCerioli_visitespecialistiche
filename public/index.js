@@ -1,5 +1,5 @@
-import { createMiddleware } from "../middleware.js";
-import { createLogin } from "../login.js";
+import { createMiddleware } from "./middleware.js";
+import { createLogin } from "./login.js";
 const tableContainer = document.getElementById('table-container');
 let currentWeekOffset = 0;
 let tipologiaSelez = 0;
@@ -9,7 +9,7 @@ const middleware=createMiddleware();
 
 createLogin();
 
-fetch('../conf.json') // carica le variabili da conf.json
+fetch('./conf.json') // carica le variabili da conf.json
   .then(response => {
     if (!response.ok) {
       console.log('Errore nel caricamento del file JSON');
@@ -22,8 +22,18 @@ fetch('../conf.json') // carica le variabili da conf.json
     myToken = data.cacheToken;
     myKey = data.myKey;
     console.log(tipologieVisita, giorniSettimana, myKey, myToken);
-    middleware.load().then(res=>{console.log(res)});
-    render();
+    middleware.load()
+      .then(res => { 
+        console.log(res);
+        Object.keys(res).forEach(key =>{
+          const date = new Date(res[key].date);
+          const formattedDate = date.toISOString().split('T')[0];
+          const blud = `${res[key].idType}/${formattedDate}/${res[key].hour}`;
+          diz[blud] = res[key].name
+        })
+        console.log(diz);
+        render(); 
+      });
   })
   .catch(error => console.error('Errore:', error));
 
