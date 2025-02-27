@@ -1,10 +1,12 @@
-//import { createMiddleware } from "../middleware.js";
+import { createMiddleware } from "../middleware.js";
 import { createLogin } from "../login.js";
 const tableContainer = document.getElementById('table-container');
 let currentWeekOffset = 0;
 let tipologiaSelez = 0;
 let myToken, myKey, tipologieVisita, giorniSettimana;
 let diz = {}; 
+const middleware=createMiddleware();
+
 createLogin();
 
 fetch('../conf.json') // carica le variabili da conf.json
@@ -20,6 +22,7 @@ fetch('../conf.json') // carica le variabili da conf.json
     myToken = data.cacheToken;
     myKey = data.myKey;
     console.log(tipologieVisita, giorniSettimana, myKey, myToken);
+    middleware.load().then(res=>{console.log(res)});
     render();
   })
   .catch(error => console.error('Errore:', error));
@@ -148,15 +151,16 @@ function SubmForm() { //componente form
     }
     const key = `${tipologieVisita[tipologiaSelez]}/${data}/${ora}`;
     const disponibilita = diz[key];
-
+    let dizionario = {"idType":tipologieVisita[tipologiaSelez], "name":nominativo , "date":data, "hour":ora}
     if (!disponibilita) {
         diz[key] = nominativo;
         console.log(diz);
-        //IMPLEMENTARE SALVATAGGIO SU DB
+        middleware.add(dizionario);
         esitoDiv.innerHTML = '<div class="alert alert-success">Prenotazione aggiunta con successo!</div>';
         document.getElementById('data').value = "";
         document.getElementById('ora').value = "";
         document.getElementById('nominativo').value = "";
+        
         render();
     } else {
         esitoDiv.innerHTML ='<div class="alert alert-danger">Slot non disponibile. Riprova.</div>';

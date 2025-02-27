@@ -20,6 +20,10 @@ const executeQuery = (sql) => {
 }
 
 const database = {
+    init: (name) => {
+        let sql = `INSERT INTO type (name) VALUES (${name})`;
+        return executeQuery(sql)
+    },
     createTable: async() => {
         await executeQuery(`
        CREATE TABLE IF NOT EXISTS type (
@@ -30,11 +34,10 @@ const database = {
         return await executeQuery(`
         CREATE TABLE IF NOT EXISTS visit (
         id int PRIMARY KEY AUTO_INCREMENT,
-        idType int NOT NULL,
+        idType VARCHAR(50),
         date DATE NOT NULL,
         hour INT NOT NULL,
-        name VARCHAR(50),
-        FOREIGN KEY (idType) REFERENCES type(id) )`);      
+        name VARCHAR(50),`);      
     },
     insert: async (visit) =>{
         let sql = `
@@ -45,16 +48,7 @@ const database = {
             '${visit.hour}', 
             ${visit.name})
             `;
-      const result = await executeQuery(sql);
-      visit.plates.forEach(async (element) => {
-         sql = `
-            INSERT INTO plates(idType
-            VALUES (
-               '${element}', 
-               ${result.insertId})
-         `;
-         await executeQuery(sql);
-      });
+        return await executeQuery(sql);
    },
     select: () =>{
         const sql = `
@@ -70,6 +64,7 @@ const database = {
         sql = sql.replace("$ID",id);
         return executeQuery(sql);
     },
+    
 }
 
 module.exports = database;

@@ -1,46 +1,31 @@
-export const createMiddleware = () => {
+const createMiddleware = () => {
   return {
-    load: () => {
-      return new Promise((resolve, reject) => {
-        fetch("http://localhost:80/visits")
-          .then((response) => response.json())
-          .then((json) => {
-            resolve(json);
-          })
-          .catch(reject);
+    load: async () => {
+      const response = await fetch("/visits");
+      const json = await response.json();
+      return json;
+    },
+    delete: async (id) => {
+      const response = await fetch("/delete/" + id, {
+        method: 'DELETE',
       });
+      const json = await response.json();
+      return json;
     },
-    delete: (id) => {
-      return new Promise((resolve, reject) => {
-        fetch(`http://localhost:80/delete/${id}`, {
-          method: "DELETE"
-        })
-          .then((response)=> response.json())
-          .then((json)=> {
-            resolve(json);
-          })
-      })
-    },
-    add: (visit) => {
-      return new Promise((resolve, reject) => {
-        fetch("http://localhost:80/visits/add", {
+    add: async (visit) => {
+      const response = await fetch("/insert", {
           method: 'POST',
           headers: {
               "content-type": "application/json"
           },
           body: JSON.stringify({
-              visits: visit
+              visit: visit
           })
-        })
-        .then((response) => response.json())
-        .then((json) => {
-          resolve(json);
-        })
-        .catch((error) => {
-          reject(error);
-        });
       });
+      const json = await response.json();
+      return json;        
     }
-  };
-};
+  }
+}
 
+export default createMiddleware;
